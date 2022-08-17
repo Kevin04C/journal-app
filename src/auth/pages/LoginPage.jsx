@@ -1,12 +1,15 @@
 import { EmailOutlined, Google } from "@mui/icons-material";
 import { Button, Grid, Link, TextField, Typography } from "@mui/material";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link as RouterLink } from "react-router-dom";
 import { useForm } from "../../hooks/useForm";
 import { AuthLayout } from "../layout/AuthLayout";
 import { checkingAuthentication, startGoogleSingIn } from '../../../store/auth/thunks'
+import { useMemo } from "react";
 
 export const LoginPage = () => {
+
+ const { status } =  useSelector(state => state.auth);
 
   const dispatch = useDispatch();
 
@@ -23,13 +26,11 @@ export const LoginPage = () => {
   }
 
   const onGoogleSingIn = () => {
-
     dispatch(startGoogleSingIn())
     console.log("onGoogleSingIn");
-
   }
-
-
+  
+  const isCheking = useMemo(() =>  "checking" === status, [status])
 
   return (
     <AuthLayout title="Login">
@@ -61,12 +62,22 @@ export const LoginPage = () => {
 
         <Grid container spacing={2} sx={{ marginTop: 1 }}>
           <Grid item xs={12} md={6}>
-            <Button  type="submit" variant="contained" fullWidth>
+            <Button 
+              type="submit" 
+              variant="contained" 
+              fullWidth
+              disabled={isCheking}
+            >
               <Typography>LOGIN</Typography>
             </Button>
           </Grid>
           <Grid item xs={12} md={6}>
-            <Button onClick={onGoogleSingIn} variant="contained" fullWidth>
+            <Button 
+              onClick={onGoogleSingIn} 
+              variant="contained" 
+              fullWidth
+              disabled={isCheking}
+            >
               <Google />
               <Typography sx={{ marginLeft: 1 }}>Google</Typography>
             </Button>
