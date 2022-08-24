@@ -1,36 +1,38 @@
 import { EmailOutlined, Google } from "@mui/icons-material";
-import { Button, Grid, Link, TextField, Typography } from "@mui/material";
+import { Alert, Button, Grid, imageListClasses, Link, TextField, Typography } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { Link as RouterLink } from "react-router-dom";
 import { useForm } from "../../hooks/useForm";
 import { AuthLayout } from "../layout/AuthLayout";
-import { checkingAuthentication, startGoogleSingIn } from '../../../store/auth/thunks'
+import { startGoogleSingIn,startLoginWithEmailPassword } from '../../../store/auth/thunks'
 import { useMemo } from "react";
 
 export const LoginPage = () => {
 
- const { status } =  useSelector(state => state.auth);
+ const { status, errorMessage } =  useSelector(state => state.auth);
 
   const dispatch = useDispatch();
 
-  const { email, password, onInputChange } = useForm({
-    email: "kevin@google.com",
-    password: "123456",
+  const { email, password, onInputChange, formState } = useForm({
+    email: "kevin@kevin.com",
+    password: "kevin123",
   });
+
 
   const onSubmit = (e) => {
     e.preventDefault();
+    
+    if([email, password].includes("")) return;
 
-    dispatch(checkingAuthentication(email, password));
-    console.log({email, password});
+    dispatch(startLoginWithEmailPassword(formState))
+
   }
 
   const onGoogleSingIn = () => {
     dispatch(startGoogleSingIn())
-    console.log("onGoogleSingIn");
   }
   
-  const isCheking = useMemo(() =>  "checking" === status, [status])
+  const isChekingAuthenticated = useMemo(() =>  "checking" === status, [status])
 
   return (
     <AuthLayout title="Login">
@@ -47,7 +49,11 @@ export const LoginPage = () => {
               onChange={onInputChange}
             />
           </Grid>
-          <Grid item xs={12}>
+          <Grid 
+            item 
+            xs={12}
+            sx={{marginBottom: 2}}
+          >
             <TextField
               label="Contraseña"
               type="password"
@@ -60,13 +66,25 @@ export const LoginPage = () => {
           </Grid>
         </Grid>
 
+        <Grid 
+            item 
+            xs={12}
+            display={!!errorMessage ? '' : 'none'}
+          >
+            <Alert
+              severity="error"
+            >
+              {errorMessage}
+            </Alert>
+        </Grid>
+
         <Grid container spacing={2} sx={{ marginTop: 1 }}>
           <Grid item xs={12} md={6}>
             <Button 
               type="submit" 
               variant="contained" 
               fullWidth
-              disabled={isCheking}
+              disabled={isChekingAuthenticated}
             >
               <Typography>LOGIN</Typography>
             </Button>
@@ -76,7 +94,7 @@ export const LoginPage = () => {
               onClick={onGoogleSingIn} 
               variant="contained" 
               fullWidth
-              disabled={isCheking}
+              disabled={isChekingAuthenticated}
             >
               <Google />
               <Typography sx={{ marginLeft: 1 }}>Google</Typography>

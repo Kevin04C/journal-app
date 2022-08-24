@@ -7,6 +7,9 @@ import { NoteView, NothingSelectedView } from '../views/'
 export const JournalPage = () => {
   return (
     <JournalLayout>
+      
+      {/* Escribe una nota o crea una  */}
+
       {/* <NothingSelectedView /> */}
       <NoteView />
 
