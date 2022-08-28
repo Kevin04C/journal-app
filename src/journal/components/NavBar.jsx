@@ -2,15 +2,18 @@ import { useDispatch } from 'react-redux'
 import { MenuOutlined, LogoutOutlined, Logout } from "@mui/icons-material"
 import { AppBar, Grid, IconButton, Toolbar, Typography } from "@mui/material"
 import { startLogout } from '../../../store/auth/thunks';
+import { setMenu } from '../../../store/journal/journalSlice';
 
 export const NavBar = ({drawerWith}) => {
 
   const dispatch = useDispatch();
 
   const onLogout = () => {
-
     dispatch(startLogout())
+  }
 
+  const onActiveMenu = () => {
+    dispatch(setMenu())
   }
 
 
@@ -27,6 +30,7 @@ export const NavBar = ({drawerWith}) => {
           color='inherit'
           edge='start'
           sx={{marginRight: 2, display: {sm: 'none'}}}
+          onClick={onActiveMenu}
         >
           <MenuOutlined />
         </IconButton>

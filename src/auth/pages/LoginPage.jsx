@@ -7,16 +7,19 @@ import { AuthLayout } from "../layout/AuthLayout";
 import { startGoogleSingIn,startLoginWithEmailPassword } from '../../../store/auth/thunks'
 import { useMemo } from "react";
 
+
+const formData = {
+  email: "",
+  password: "",
+}
+
 export const LoginPage = () => {
 
  const { status, errorMessage } =  useSelector(state => state.auth);
 
   const dispatch = useDispatch();
 
-  const { email, password, onInputChange, formState } = useForm({
-    email: "kevin@kevin.com",
-    password: "kevin123",
-  });
+  const { email, password, onInputChange, formState } = useForm(formData);
 
 
   const onSubmit = (e) => {
@@ -36,7 +39,10 @@ export const LoginPage = () => {
 
   return (
     <AuthLayout title="Login">
-      <form onSubmit={onSubmit}>
+      <form 
+        onSubmit={onSubmit}
+        className="animate__animated animate__fadeIn animate__faster"      
+      >
         <Grid container>
           <Grid item xs={12} sx={{ marginBottom: 2 }}>
             <TextField

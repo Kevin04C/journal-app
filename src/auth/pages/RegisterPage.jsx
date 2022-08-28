@@ -10,9 +10,9 @@ import { useSelector } from 'react-redux'
 import { useMemo } from "react";
 
 const formData = {
-  email: "kevin@kevin.com",
-  password: "kevin123",
-  displayName: "Kevin Orealy"
+  email: "",
+  password: "",
+  displayName: ""
 }
 
 const formValiations = {
@@ -48,7 +48,10 @@ export const RegisterPage = () => {
 
   return (
     <AuthLayout title="Crear Cuenta">
-      <form onSubmit={onSubmit}>
+      <form 
+        onSubmit={onSubmit}
+        className="animate__animated animate__fadeIn animate__faster"
+      >
         <Grid container>
           <Grid item xs={12} sx={{ marginBottom: 2 }}>
             <TextField
